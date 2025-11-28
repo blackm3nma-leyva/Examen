@@ -1,35 +1,50 @@
 function DocumentsPanel() {
   try {
     const documents = [
-      { id: 1, name: 'Reporte Mensual.pdf', status: 'Completado', date: '2025-11-25' },
-      { id: 2, name: 'Proyecto Lambda.docx', status: 'En Proceso', date: '2025-11-26' },
-      { id: 3, name: 'Análisis de Datos.xlsx', status: 'Pendiente', date: '2025-11-20' }
+      { id: 1, name: 'Reporte Mensual.pdf', status: 'Completado', date: '2025-11-20' },
+      { id: 2, name: 'Análisis de Datos.xlsx', status: 'En Proceso', date: '2025-11-25' },
+      { id: 3, name: 'Presentación Q4.pptx', status: 'Pendiente', date: '2025-11-18' },
+      { id: 4, name: 'Manual Usuario.docx', status: 'Completado', date: '2025-11-22' }
     ];
 
     const getStatusColor = (status) => {
-      if (status === 'Completado') return 'bg-green-500';
-      if (status === 'En Proceso') return 'bg-[var(--primary-color)]';
-      return 'bg-gray-400';
+      switch (status) {
+        case 'Completado': return 'bg-green-500';
+        case 'En Proceso': return 'bg-yellow-500';
+        case 'Pendiente': return 'bg-red-500';
+        default: return 'bg-gray-500';
+      }
     };
 
     return (
-      <div className="bg-white rounded-lg p-6 shadow-lg" data-name="documents-panel" data-file="components/DocumentsPanel.js">
-        <h3 className="text-xl font-bold mb-4">Documentos Recientes</h3>
-        <div className="space-y-3">
-          {documents.map(doc => (
-            <div key={doc.id} className="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
-              <div className="flex items-center gap-3">
-                <div className="icon-file-text text-xl text-gray-600"></div>
-                <div>
-                  <p className="font-bold text-sm">{doc.name}</p>
-                  <p className="text-xs text-gray-500">Última modificación: {doc.date}</p>
-                </div>
-              </div>
-              <span className={`${getStatusColor(doc.status)} text-white text-xs px-3 py-1 rounded-full`}>
-                {doc.status}
-              </span>
-            </div>
-          ))}
+      <div className="bg-blue-50 bg-opacity-95 backdrop-blur p-6 rounded-lg shadow-lg border-2 border-blue-200" data-name="documents-panel" data-file="components/DocumentsPanel.js">
+        <h3 className="text-xl font-bold mb-4 text-blue-900">Documentos Recientes</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b-2 border-blue-300">
+                <th className="text-left py-3 px-4 text-blue-900">Documento</th>
+                <th className="text-left py-3 px-4 text-blue-900">Estado</th>
+                <th className="text-left py-3 px-4 text-blue-900">Última Modificación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {documents.map(doc => (
+                <tr key={doc.id} className="border-b border-blue-200 hover:bg-blue-100">
+                  <td className="py-3 px-4 flex items-center gap-2">
+                    <div className="icon-file-text text-[var(--primary-color)]"></div>
+                    {doc.name}
+                  </td>
+                  <td className="py-3 px-4">
+                    <span className={`${getStatusColor(doc.status)} text-white px-3 py-1 rounded-full text-sm`}>
+                      {doc.status}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-gray-600">{doc.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     );

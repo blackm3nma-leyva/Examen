@@ -1,26 +1,19 @@
-const USERS_DB = [
-  { username: 'super1', password: 'Super123!', role: 'superusuario', name: 'Carlos Mendoza' },
-  { username: 'super2', password: 'Super456!', role: 'superusuario', name: 'Ana García' },
-  { username: 'admin1', password: 'Admin123!', role: 'admin', name: 'Luis Torres' },
-  { username: 'admin2', password: 'Admin456!', role: 'admin', name: 'María López' },
-  { username: 'user1', password: 'User123!', role: 'usuario', name: 'Pedro Sánchez' },
-  { username: 'user2', password: 'User456!', role: 'usuario', name: 'Laura Martínez' }
+const USERS = [
+  { username: 'super1', password: 'super123', name: 'Super Usuario 1', role: 'Superusuario' },
+  { username: 'super2', password: 'super123', name: 'Super Usuario 2', role: 'Superusuario' },
+  { username: 'admin1', password: 'admin123', name: 'Administrador 1', role: 'Administrador' },
+  { username: 'admin2', password: 'admin123', name: 'Administrador 2', role: 'Administrador' },
+  { username: 'user1', password: 'user123', name: 'Usuario 1', role: 'Usuario' },
+  { username: 'user2', password: 'user123', name: 'Usuario 2', role: 'Usuario' }
 ];
 
 function authenticateUser(username, password) {
-  const user = USERS_DB.find(u => u.username === username && u.password === password);
-  if (user) {
-    const userData = { ...user };
-    delete userData.password;
-    localStorage.setItem('currentUser', JSON.stringify(userData));
-    return userData;
-  }
-  return null;
+  return USERS.find(user => user.username === username && user.password === password);
 }
 
 function getCurrentUser() {
-  const userData = localStorage.getItem('currentUser');
-  return userData ? JSON.parse(userData) : null;
+  const userStr = localStorage.getItem('currentUser');
+  return userStr ? JSON.parse(userStr) : null;
 }
 
 function logout() {

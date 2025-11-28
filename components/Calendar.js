@@ -1,32 +1,54 @@
 function Calendar() {
   try {
-    const [currentDate, setCurrentDate] = React.useState(new Date(2025, 10, 27));
+    const [currentDate, setCurrentDate] = React.useState(new Date());
     
-    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    
+    const getDaysInMonth = (date) => {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      return { firstDay, daysInMonth };
+    };
 
-    const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
-    const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
-    const today = () => setCurrentDate(new Date(2025, 10, 27));
+    const { firstDay, daysInMonth } = getDaysInMonth(currentDate);
+    
+    const nextMonth = () => {
+      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
+    };
+    
+    const prevMonth = () => {
+      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
+    };
 
     return (
-      <div className="bg-white rounded-lg p-6 shadow-lg" data-name="calendar" data-file="components/Calendar.js">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h3>
+      <div className="bg-blue-50 bg-opacity-95 backdrop-blur p-6 rounded-lg shadow-lg border-2 border-blue-200" data-name="calendar" data-file="components/Calendar.js">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-blue-900">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h3>
           <div className="flex gap-2">
-            <button onClick={prevMonth} className="p-1 hover:bg-gray-100 rounded"><div className="icon-chevron-left text-sm"></div></button>
-            <button onClick={today} className="px-2 text-xs bg-[var(--primary-color)] text-white rounded">Hoy</button>
-            <button onClick={nextMonth} className="p-1 hover:bg-gray-100 rounded"><div className="icon-chevron-right text-sm"></div></button>
+            <button onClick={prevMonth} className="px-3 py-1 bg-[var(--primary-color)] text-white rounded hover:bg-[var(--secondary-color)]">
+              <div className="icon-chevron-left text-sm"></div>
+            </button>
+            <button onClick={() => setCurrentDate(new Date())} className="px-3 py-1 bg-[var(--primary-color)] text-white rounded hover:bg-[var(--secondary-color)] text-sm">
+              Hoy
+            </button>
+            <button onClick={nextMonth} className="px-3 py-1 bg-[var(--primary-color)] text-white rounded hover:bg-[var(--secondary-color)]">
+              <div className="icon-chevron-right text-sm"></div>
+            </button>
           </div>
         </div>
-        <div className="grid grid-cols-7 gap-2">
-          {['D', 'L', 'M', 'M', 'J', 'V', 'S'].map((day, index) => (
-            <div key={`day-header-${index}`} className="text-center text-xs font-bold text-gray-500">{day}</div>
+        
+        <div className="grid grid-cols-7 gap-2 text-center">
+          {['D', 'L', 'M', 'X', 'J', 'V', 'S'].map(day => (
+            <div key={day} className="font-bold text-blue-700 text-sm">{day}</div>
           ))}
-          {Array(firstDay).fill(null).map((_, i) => <div key={`empty-${i}`}></div>)}
-          {Array(daysInMonth).fill(null).map((_, i) => (
-            <div key={`day-${i + 1}`} className="text-center p-2 hover:bg-[var(--primary-color)]/20 rounded cursor-pointer text-sm">
+          {Array.from({ length: firstDay }).map((_, i) => (
+            <div key={`empty-${i}`}></div>
+          ))}
+          {Array.from({ length: daysInMonth }).map((_, i) => (
+            <div key={i + 1} className="py-2 hover:bg-blue-200 rounded cursor-pointer text-blue-900">
               {i + 1}
             </div>
           ))}

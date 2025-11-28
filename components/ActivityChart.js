@@ -1,5 +1,3 @@
-const ChartJS = window.Chart;
-
 function ActivityChart() {
   try {
     const chartRef = React.useRef(null);
@@ -7,6 +5,7 @@ function ActivityChart() {
 
     React.useEffect(() => {
       if (chartRef.current) {
+        const ChartJS = window.Chart;
         const ctx = chartRef.current.getContext('2d');
         
         if (chartInstance.current) {
@@ -19,15 +18,26 @@ function ActivityChart() {
             labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
             datasets: [{
               label: 'Actividad',
-              data: [65, 78, 90, 81, 96, 72, 88],
-              borderColor: '#ff8c00',
-              backgroundColor: 'rgba(255, 140, 0, 0.1)',
-              tension: 0.4
+              data: [65, 78, 90, 81, 76, 85, 92],
+              borderColor: '#2563eb',
+              backgroundColor: 'rgba(37, 99, 235, 0.1)',
+              tension: 0.4,
+              fill: true
             }]
           },
           options: {
             responsive: true,
-            plugins: { legend: { display: false } }
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
           }
         });
       }
@@ -40,9 +50,11 @@ function ActivityChart() {
     }, []);
 
     return (
-      <div className="bg-white border-2 border-[var(--primary-color)] rounded-lg p-6 shadow-lg" data-name="activity-chart" data-file="components/ActivityChart.js">
-        <h3 className="text-xl font-bold mb-4">Actividad del Usuario</h3>
-        <canvas ref={chartRef}></canvas>
+      <div className="bg-blue-50 bg-opacity-95 backdrop-blur p-6 rounded-lg shadow-lg border-2 border-blue-200" data-name="activity-chart" data-file="components/ActivityChart.js">
+        <h3 className="text-xl font-bold mb-4 text-blue-900">Actividad Semanal</h3>
+        <div className="h-64">
+          <canvas ref={chartRef}></canvas>
+        </div>
       </div>
     );
   } catch (error) {

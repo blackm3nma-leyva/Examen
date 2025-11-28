@@ -15,10 +15,10 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Algo salió mal</h1>
-            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-[var(--primary-color)] text-white rounded">
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+          <div className="text-center text-white">
+            <h1 className="text-2xl font-bold mb-4">Algo salió mal</h1>
+            <button onClick={() => window.location.reload()} className="px-6 py-2 bg-blue-600 rounded">
               Recargar Página
             </button>
           </div>
@@ -31,19 +31,60 @@ class ErrorBoundary extends React.Component {
 
 function App() {
   try {
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState('');
+
+    const handleLogin = () => {
+      const user = authenticateUser(username, password);
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.location.href = 'dashboard.html';
+      } else {
+        setError('Usuario o contraseña incorrectos');
+      }
+    };
+
     return (
-      <div 
-        className="min-h-screen flex items-center justify-center relative"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?q=80&w=2000)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-        data-name="app" 
-        data-file="app.js"
-      >
-        <div className="absolute inset-0 backdrop-blur-md bg-[var(--bg-space)]/60"></div>
-        <LoginForm />
+      <div className="min-h-screen flex items-center justify-center p-4" data-name="app" data-file="app.js">
+        <div className="bg-white bg-opacity-20 backdrop-blur-md p-8 rounded-lg shadow-2xl w-full max-w-md border border-white border-opacity-30">
+          <div className="flex justify-center mb-6">
+            <Logo />
+          </div>
+          
+          <h1 className="text-3xl font-bold text-white text-center mb-2">Lambda Core</h1>
+          <p className="text-white text-center mb-6 text-opacity-90">Iniciar Sesión</p>
+          
+          {error && (
+            <div className="bg-red-500 bg-opacity-80 text-white p-3 rounded mb-4 text-center">
+              {error}
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-3 rounded bg-white bg-opacity-90 text-gray-900 placeholder-gray-500 font-normal"
+            />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+              className="w-full px-4 py-3 rounded bg-white bg-opacity-90 text-gray-900 placeholder-gray-500 font-normal"
+            />
+            <button
+              onClick={handleLogin}
+              className="w-full py-3 bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-white font-bold rounded transition"
+            >
+              Ingresar
+            </button>
+          </div>
+        </div>
       </div>
     );
   } catch (error) {
